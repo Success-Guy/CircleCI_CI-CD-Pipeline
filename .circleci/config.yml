@@ -122,8 +122,8 @@ jobs:
           name: test
           command: |
             cd backend
-            npm audit fix --force
             npm install
+            npm audit fix --force
             npm audit --audit-level=critical
       - slack/notify:
           channel: 03-cloud-devops
@@ -141,8 +141,8 @@ jobs:
           name: test
           command: |
             cd frontend
-            npm audit fix --force
             npm install
+            npm audit fix --force
             npm audit --audit-level=critical
 
       - slack/notify:
