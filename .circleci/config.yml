@@ -123,6 +123,7 @@ jobs:
           command: |
             cd frontend
             npm install
+            npm update --force
             npm audit fix --force
             npm audit --audit-level=critical
       - slack/notify:
