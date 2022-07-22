@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   node: 'circleci/node:4.1'
-  slack: circleci/slack@4.1
+  slack: 'circleci/slack@4.1'
 
 commands:
   destroy-environment:
@@ -52,21 +52,22 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      custom: |
-            {
-              "blocks": [
+      - slack/notify:
+          custom: |
                 {
-                  "type": "section",
-                  "fields": [
+                  "blocks": [
                     {
-                      "type": "plain_text",
-                      "text": "*This is a text notification*",
-                      "emoji": true
+                      "type": "section",
+                      "fields": [
+                        {
+                          "type": "plain_text",
+                          "text": "*This is a text notification*",
+                          "emoji": true
+                        }
+                      ]
                     }
                   ]
                 }
-              ]
-            }
           event: always
 
   build-backend:
