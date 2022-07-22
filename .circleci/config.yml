@@ -106,7 +106,7 @@ jobs:
           name: test
           command: |
             cd backend
-            npm audit fix --audit-level=critical --force
+            npm audit fix
             npm audit --audit-level=critical
       # Your job code here
 
@@ -121,7 +121,7 @@ jobs:
           name: test
           command: |
             cd frontend
-            npm audit fix --audit-level=critical --force
+            npm audit fix
             npm audit --audit-level=critical
       # Your job code here
 
