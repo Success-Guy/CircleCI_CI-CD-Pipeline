@@ -197,6 +197,25 @@ jobs:
       - destroy-environment
       # Here's where you will add some code to rollback on failure      
 
+  configure_infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          # You can get this ID in the section where you registered the SSH Key
+          fingerprints: ["d2:e2:97:f4:a7:4b:fa:dc:39:1c:5f:b8:68:4f:40:dd"]
+      - run:
+          name: Install Ansible
+          command: |
+            apk add --update ansible
+      - attach_wrkspace:
+          at: ~/
+      - run:
+          name: Run Playbook and Configure server
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-server.yml
 
 workflows:
   default:
