@@ -1,5 +1,5 @@
 ---
-- name: "configuration play." 
+- name: "configuration play"
   hosts: all
   user: ubuntu
   become: true
