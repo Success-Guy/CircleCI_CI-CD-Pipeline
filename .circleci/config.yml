@@ -146,7 +146,7 @@ jobs:
           name: test
           command: |
             cd backend
-            npm update
+            npm update --force
             npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
 
