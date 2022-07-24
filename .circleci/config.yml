@@ -209,7 +209,7 @@ jobs:
           name: Install Ansible
           command: |
             apk add --update ansible
-      - attach_wrkspace:
+      - attach_workspace:
           at: ~/
       - run:
           name: Run Playbook and Configure server
