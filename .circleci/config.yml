@@ -257,8 +257,9 @@ jobs:
           keys: [frontend-build]
       - run:
           command: |
-            yum install nodejs -y
-            yum install npm -y
+            curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
+            yum install -y nodejs
+            # yum install npm -y
       - run:
           name: Get backend url
           command: |
@@ -306,11 +307,11 @@ jobs:
           name: Deploy backend
           command: |
             cd backend
-            npm i
+            npm install
             npm run build
             cd ..
             # Zip the directory
-            tar -C backend -czvf artifact.tar.gz .
+            tar -C backend -czf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
