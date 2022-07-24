@@ -156,7 +156,7 @@ jobs:
 
   deploy-infrastructure:
     docker: 
-      - image:  
+      - image: amazon/aws-cli
       # Docker image here that supports AWS CLI
     steps:
       # Checkout code from git
@@ -188,7 +188,7 @@ jobs:
               --filter "Name=instance-state-name,Values=running" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> ~/project/.circleci/ansible/inventory.txt
-              
+
       - persist_to_workspace:
           root: ~/
           paths:
