@@ -257,7 +257,7 @@ jobs:
           keys: [frontend-build]
       - run:
           command: |
-            curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
+            curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
             yum install -y nodejs
             # yum install npm -y
       - run:
