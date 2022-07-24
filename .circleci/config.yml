@@ -259,7 +259,7 @@ jobs:
           command: |
             curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
             yum install -y nodejs
-            # yum install npm -y
+            yum install -y tar
       - run:
           name: Get backend url
           command: |
@@ -343,7 +343,7 @@ workflows:
       #     requires: [configure-infrastructure]
       - deploy-frontend
           # requires: [run-migrations]
-      - deploy-backend
+      # - deploy-backend:
           # requires: [run-migrations]
 
       # - smoke-test:
