@@ -20,6 +20,7 @@ commands:
               --stack-name udapeople-front-end-${CIRCLE_WORKFLOW_ID:0:7}
       
     ## ssh key "d2:e2:97:f4:a7:4b:fa:dc:39:1c:5f:b8:68:4f:40:dd"
+  
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
@@ -231,7 +232,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm install            
+            # npm install            
             # Run and save the migration output
             npm run migrations > ~/project/migrations_dump.txt
       - run:
@@ -316,30 +317,29 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-frontend
+      - build-frontend
       - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
       - scan-backend:
           requires: [build-backend]
-      # - deploy-infrastructure:
-      #      requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #     filters:
-      #       branches:
-      #         only: [master]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
+      - deploy-infrastructure:
+           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [master]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
       - run-migrations:
-          requires: [scan-backend]
-      #     requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
 
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
