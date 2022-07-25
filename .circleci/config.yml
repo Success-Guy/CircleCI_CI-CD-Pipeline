@@ -75,9 +75,9 @@ jobs:
             npm install
             npm run build
             cd ..
-            tar -C backend -czf artifact.tar.gz .
+            tar -C backend -czf artifact.tar.gz ./build/
       - save_cache:
-          paths: [backend/node_modules, artifact.tar.gz]
+          paths: [backend/node_modules, build]
           key: backend
       - slack/notify:
           event: pass
@@ -315,7 +315,7 @@ jobs:
             # cd ..
             # Zip the directory
             # tar -C backend -czf artifact.tar.gz .
-            ls -al1h
+            ls -al1h build
       - run:
           name: Deploy backend
           command: |
@@ -329,29 +329,30 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
+      # - build-frontend
       - build-backend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
-      - scan-backend:
-          requires: [build-backend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [master]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      # - deploy-infrastructure:
+      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      #     filters:
+      #       branches:
+      #         only: [master]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+          # requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #     requires: [run-migrations]
       - deploy-backend:
-          requires: [run-migrations]
+          requires: [build-backend]
+          # requires: [run-migrations]
 
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
