@@ -313,7 +313,7 @@ jobs:
             cd ..
             # Zip the directory
             tar -C backend -czf artifact.tar.gz .
-            cp artifact.tar.gz .circleci/ansible/files/
+            cp artifact.tar.gz .circleci/ansible/roles/deploy/files
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
@@ -341,12 +341,12 @@ workflows:
       #         only: [master]
       # - configure-infrastructure:
           # requires: [deploy-infrastructure]
-      - run-migrations
+      # - run-migrations:
           # requires: [configure-infrastructure]
       # - deploy-frontend:
           # requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
+      - deploy-backend
+          # requires: [run-migrations]
 
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
