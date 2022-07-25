@@ -76,8 +76,8 @@ jobs:
             npm run build
             cd ..
             tar -C backend -czf artifact.tar.gz .
-            cp artifact.tar.gz build/
             ls -a1l 
+            cp artifact.tar.gz build/
       - save_cache:
           paths: [backend/node_modules, build]
           key: backend
