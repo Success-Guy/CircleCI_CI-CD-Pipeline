@@ -5,7 +5,7 @@ Parameters:
   WorkID:
     Description: Unique identifier.
     Type: String
-    Default: sbcfweyfgfygevfhwef
+    Default: "sbcfweyfgfygevfhw"
 
 Resources:
 
@@ -32,9 +32,9 @@ Resources:
           TargetOriginId: webpage
           ViewerProtocolPolicy: allow-all
 
-# Outputs:
-#   WorkID:
-#     Value: !Sub ${WorkID}
-#     Description: URL for website hosted on S3
-#     Export:
-#       Name: WorkID
+Outputs:
+  WorkID:
+    Value: !Sub "udapeople-${WorkID}.s3-website-us-east-1.amazonaws.com"
+    Description: URL for website hosted on S3
+    Export:
+      Name: WorkID

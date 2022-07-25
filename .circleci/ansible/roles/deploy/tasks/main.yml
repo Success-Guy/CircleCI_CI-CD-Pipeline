@@ -7,12 +7,12 @@
 
 - name: Copy artifact
   template:
-    src: "~/project/artifact.tar.gz"
-    dest: "~/web/"
+    src: "files/artifact.tar.gz"
+    dest: "~/"
 
 - name: "Extract artifact"
   shell: | 
-    tar -xzvf artifact.tar.gz ~/web/
+    tar -xzf artifact.tar.gz ~/web/
 
 - name: Executing node
   shell: |
