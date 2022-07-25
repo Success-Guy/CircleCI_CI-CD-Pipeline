@@ -74,8 +74,10 @@ jobs:
             cd backend
             npm install
             npm run build
+            cd ..
+            tar -C backend -czf artifact.tar.gz .
       - save_cache:
-          paths: [backend/node_modules]
+          paths: [backend/node_modules, artifact.tar.gz]
           key: backend
       - slack/notify:
           event: pass
@@ -296,27 +298,26 @@ jobs:
           name: Install Ansible
           command: |
             apk add --update ansible
-            apk add --update nodejs
-            apk add --update npm
-            apk add --update tar
-            apk add --update gzip
-      # - restore_cache:
-          # keys: [backend]
+            # apk add --update nodejs
+            # apk add --update npm
+            # apk add --update tar
+            # apk add --update gzip
+      - restore_cache:
+          keys: [backend]
       - attach_workspace:
           at: ~/
       - run:
-          name: Deploy backend
+          name: Prepare deploy
           command: |
             # cd backend
             # npm install
             # npm run build
             # cd ..
             # Zip the directory
-            tar -C backend -czf artifact.tar.gz .
+            # tar -C backend -czf artifact.tar.gz .
             ls -al1h
-            # cp artifact.tar.gz ./.circleci/ansible/roles/deploy/files/
       - run:
-          name: Run Ansible
+          name: Deploy backend
           command: |
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
