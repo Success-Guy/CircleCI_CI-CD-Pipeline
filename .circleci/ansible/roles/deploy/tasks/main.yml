@@ -6,7 +6,7 @@
     state: directory
 
 - name: Copy artifact
-  template:
+  copy:
     src: "~/project/artifact.tar.gz"
     dest: "~/"
 
