@@ -316,11 +316,11 @@ jobs:
             # cp artifact.tar.gz ./.circleci/ansible/roles/deploy/files/
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
-        - run:
-            name: Run Ansible
-            command: |
-              cd .circleci/ansible
-              ansible-playbook -i inventory.txt deploy-backend.yml
+      - run:
+          name: Run Ansible
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure
       # - destroy-environment
 
