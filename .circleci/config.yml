@@ -81,10 +81,12 @@ jobs:
       - save_cache:
           key: backend
           paths: [backend/node_modules]
-      - save_cache:
-          key: artifact
+
+      - persist_to_workspace:
+          root: ~/
           paths:
-            - build
+            - project/build/artifact.tar.gz
+      
       - slack/notify:
           event: pass
           template: success_tagged_deploy_1
@@ -309,7 +311,7 @@ jobs:
             # apk add --update tar
             # apk add --update gzip
       - restore_cache:
-          keys: [backend, artifact]
+          keys: [backend]
       - attach_workspace:
           at: ~/
       - run:
