@@ -77,9 +77,11 @@ jobs:
             cd ..
             tar -C backend -czf artifact.tar.gz .
             ls -a1l 
-            cp artifact.tar.gz build/
+            mv artifact.tar.gz build/
       - save_cache:
-          paths: [backend/node_modules, build]
+          paths:
+            - backend/node_modules
+            - build
           key: backend
       - slack/notify:
           event: pass
