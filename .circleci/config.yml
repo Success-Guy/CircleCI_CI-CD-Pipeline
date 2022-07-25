@@ -300,17 +300,17 @@ jobs:
             apk add --update npm
             apk add --update tar
             apk add --update gzip
-      - restore_cache:
-          keys: [backend]
+      # - restore_cache:
+          # keys: [backend]
       - attach_workspace:
           at: ~/
       - run:
           name: Deploy backend
           command: |
-            cd backend
-            npm install
-            npm run build
-            cd ..
+            # cd backend
+            # npm install
+            # npm run build
+            # cd ..
             # Zip the directory
             tar -C backend -czf artifact.tar.gz .
             cp artifact.tar.gz .circleci/ansible/roles/deploy/files/
