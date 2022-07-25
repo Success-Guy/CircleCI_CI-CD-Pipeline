@@ -5,14 +5,10 @@
     path: ~/web
     state: directory
 
-- name: Copy artifact
-  copy:
+- name: Extract foo.tgz into /var/lib/foo
+  unarchive:
     src: "~/project/artifact.tar.gz"
-    dest: "~/"
-
-- name: "Extract artifact"
-  shell: | 
-    tar -xzf artifact.tar.gz ~/web/
+    dest: ~/web/
 
 - name: Executing node
   shell: |
