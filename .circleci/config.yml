@@ -345,7 +345,8 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update curl
-            apk add --update python3
+            apk add --no-cache python3 py3-pip
+            # apk add --update python3
             apk add --update aws-cli
             # yum install -y curl
             # yum install -y grep
