@@ -343,8 +343,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-             run: apk add --update curl
-             run: apk add --update tail
+             apk add --update curl
+             apk add --update tail
       - run:
           name: Get backend url
           command: |
