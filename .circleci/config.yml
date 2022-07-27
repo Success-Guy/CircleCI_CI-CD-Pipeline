@@ -302,6 +302,9 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - when:
+          condition:
+            equal: [ master]
       - add_ssh_keys:
           # You can get this ID in the section where you registered the SSH Key
           fingerprints: ["d2:e2:97:f4:a7:4b:fa:dc:39:1c:5f:b8:68:4f:40:dd"]
@@ -381,9 +384,8 @@ jobs:
 
       - run:
           name: Frontend smoke test.
-          command: |
-              # URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
-              URL="http://udapeople-e602bda.s3-website-us-east-1.amazonaws.com/#/employees"            
+          command: |          
+              URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
                 echo ${URL} 
                 if curl -s ${URL} | grep "Welcome"
                 then
@@ -458,7 +460,6 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
