@@ -335,28 +335,28 @@ jobs:
 
   smoke-test:
     docker:
-      - image: alpine:latest
+      - image: amazon/aws-cli
     steps:
       - checkout
       # - attach_workspace"
       #     at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-             apk add --update curl
-            #  apk add --update tail
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       #  apk add --update curl
+      #       #  apk add --update tail
       - run:
           name: Get backend url
           command: |
             tail -1 .circleci/ansible/inventory.txt
             export BACKEND_IP=$(tail -1 .circleci/ansible/inventory.txt)
-            export BACKEND_URL="http://${BACKEND_IP}:3030"
+            export BACKEND_URL="http://${BACKEND_IP}:3030/api/status"
             echo ${BACKEND_URL}
       - run:
           name: Backend smoke test.
           command: |
-            # if curl "${BACKEND_URL}/api/status" | grep "ok"
-            if curl "http://54.147.219.106:3030/api/status" | grep "ok"
+            # if curl "http://54.147.219.106:3030/api/status" | grep "ok"
+            if curl "${BACKEND_URL}/api/status" | grep "ok"
             then
                 return 0
             else
@@ -371,10 +371,11 @@ jobs:
                 if curl -s ${URL} | grep "Welcome"
                 then
                     # Change this to 0 after the job fails
-                  return 1
+                  return 0
                 else
                   return 1
                 fi
+      - destroy-environment
               
 
 workflows:
