@@ -356,7 +356,7 @@ jobs:
           name: Backend smoke test.
           command: |
             # if curl "http://54.147.219.106:3030/api/status" | grep "ok"
-            if curl "${BACKEND_URL}/api/status" | grep "ok"
+            if curl "http://${BACKEND_IP}:3030/api/status" | grep "ok"
             then
                 return 0
             else
