@@ -304,12 +304,16 @@ jobs:
       - checkout
       - when:
           condition:
-            equal: [ master]
+            equal: [master]
       - add_ssh_keys:
           # You can get this ID in the section where you registered the SSH Key
           fingerprints: ["d2:e2:97:f4:a7:4b:fa:dc:39:1c:5f:b8:68:4f:40:dd"]
+      - restore_cache:
+          keys: [backend]
+      - attach_workspace:
+          at: ~/
       - run:
-          name: Install Ansible
+          name: Install Ansible ans aws-cli
           command: |
             apk add --update ansible
             apk add --no-cache \
@@ -319,15 +323,6 @@ jobs:
             && pip3 install --no-cache-dir \
                 awscli \
             && rm -rf /var/cache/apk/*
-            # apk add --update nodejs
-            # apk add --update npm
-            # apk add --update tar
-            # apk add --update gzip
-
-      - restore_cache:
-          keys: [backend]
-      - attach_workspace:
-          at: ~/
       - run:
           name: Prepare deploy
           command: |
@@ -345,6 +340,7 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
+
       # Here's where you will add some code to rollback on failure
       - destroy-environment
       - revert-migrations
