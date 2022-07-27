@@ -346,6 +346,7 @@ jobs:
           command: |
             # apk add --update curl
             yum install -y curl
+            yum install -y grep
       - run:
           name: Backend smoke test
           command: |
