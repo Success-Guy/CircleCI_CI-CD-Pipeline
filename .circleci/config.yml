@@ -345,9 +345,13 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update curl
-            apk add --no-cache python3 py3-pip
-            # apk add --update python3
-            apk add --update aws-cli
+            RUN apk add --no-cache \
+            python3 \
+            py3-pip \
+            && pip3 install --upgrade pip \
+            && pip3 install --no-cache-dir \
+                awscli \
+            && rm -rf /var/cache/apk/*
             # yum install -y curl
             # yum install -y grep
       - run:
