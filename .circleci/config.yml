@@ -399,7 +399,7 @@ jobs:
     docker:
       - image: amazon/awscli
     steps:
-      -checkout
+      - checkout
       - run:
           name: Install dependencies
           command: |
