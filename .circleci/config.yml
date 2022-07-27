@@ -302,9 +302,9 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - when:
-          condition:
-            equal: [master]
+      # - when:
+      #     condition:
+      #       equal: [master]
       - add_ssh_keys:
           # You can get this ID in the section where you registered the SSH Key
           fingerprints: ["d2:e2:97:f4:a7:4b:fa:dc:39:1c:5f:b8:68:4f:40:dd"]
@@ -454,8 +454,14 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
+          filters:
+            branches:
+              only: master
       - deploy-backend:
           requires: [run-migrations]
+          filters:
+            branches:
+              only: master
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
