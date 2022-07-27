@@ -342,9 +342,10 @@ jobs:
       # - attach_workspace"
       #     at: ~/
       # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       apk add --update curl
+          name: Install dependencies
+          command: |
+            # apk add --update curl
+            yum install -y curl
       - run:
           name: Backend smoke test
           command: |
