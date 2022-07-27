@@ -353,12 +353,12 @@ jobs:
             export BACKEND_URL="http://${BACKEND_IP}:3030/api/status"
             echo ${BACKEND_URL}
             echo "\n http://${BACKEND_IP}:3030/api/status"
-            if curl "${BACKEND_URL}" | grep "ok"
-            then
-                return 0
-            else
-                return 1
-            fi
+              if curl "${BACKEND_URL}" | grep "ok"
+              then
+                  return 0
+              else
+                  return 1
+              fi
 
       # - run:
       #     name: Backend smoke test.
