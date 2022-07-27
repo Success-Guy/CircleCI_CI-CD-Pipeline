@@ -371,8 +371,8 @@ jobs:
               export BACKEND_IP=$(tail -1 .circleci/ansible/inventory.txt)
               export BACKEND_URL="http://${BACKEND_IP}:3030/api/status"
               echo ${BACKEND_URL}
-              # if curl -s ${BACKEND_URL} | grep "ok"
-              if curl -s "http://${BACKEND_IP}:3030/api/status" | grep "ok"
+              # if curl "http://${BACKEND_IP}:3030/api/status" | grep "ok"
+              if curl ${BACKEND_URL} | grep "ok"
               then
                   return 0
               else
