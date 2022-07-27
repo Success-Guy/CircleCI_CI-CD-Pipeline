@@ -5,7 +5,7 @@ Parameters:
   WorkID:
     Description: Unique identifier.
     Type: String
-    Default: "sbcfweyfgfygevfhw"
+    # Default: "sbcfweyfgfygevfhw"
 
 Resources:
 
