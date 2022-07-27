@@ -335,8 +335,8 @@ jobs:
 
   smoke-test:
     docker:
-      - image: amazon/aws-cli
-      # - image: python:3.7-alpine3.11
+      # - image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       # - attach_workspace"
@@ -355,7 +355,7 @@ jobs:
               export BACKEND_URL="http://${BACKEND_IP}:3030/api/status"
               echo ${BACKEND_URL}
               # if curl -s ${BACKEND_URL} | grep "ok"
-              if curl "http://${BACKEND_IP}:3030/api/status" | grep "ok"
+              if curl -s "http://${BACKEND_IP}:3030/api/status" | grep "ok"
               then
                   return 0
               else
@@ -375,7 +375,7 @@ jobs:
                 else
                   return 1
                 fi
-      # - destroy-environment
+      - destroy-environment
               
 
 workflows:
