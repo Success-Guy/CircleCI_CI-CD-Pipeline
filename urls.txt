@@ -1,1 +1,2 @@
 github: https://github.com/Success-Guy/CircleCI_CI-CD-Pipeline
+s3 bucket: https://udapeople-1e7968b.s3.us-east-1.amazonaws.com
