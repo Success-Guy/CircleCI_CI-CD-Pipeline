@@ -80,7 +80,7 @@ jobs:
             cd ..
             tar -C backend -czf artifact.tar.gz .
             ls -a1l 
-            mv artifact.tar.gz build/
+            # mv artifact.tar.gz build/
       - save_cache:
           key: backend
           paths: [backend/node_modules]
@@ -88,7 +88,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/build/artifact.tar.gz
+            - project/artifact.tar.gz
       
       - slack/notify:
           event: pass
@@ -290,9 +290,9 @@ jobs:
             cd frontend
             npm install
             npm run build
-            rm -fR node_modules
+            # rm -fR node_modules
             # tar -czf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz .
-            aws s3 cp . s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
       - destroy-environment  
       - revert-migrations   
@@ -333,6 +333,7 @@ jobs:
             # cd ..
             # Zip the directory
             # tar -C backend -czf artifact.tar.gz .
+            mv artifact.tar.gz ~/project/build/artifact.tar.gz
             ls -al1h build
       - run:
           name: Deploy backend
