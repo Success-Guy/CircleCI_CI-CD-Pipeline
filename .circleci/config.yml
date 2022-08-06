@@ -425,7 +425,7 @@ jobs:
           root: ~/
           paths:
             - project/oldWorkID.txt
-      - destroy
+      - destroy-environmen
 
   cleanup:
     docker:
