@@ -452,12 +452,18 @@ jobs:
             # destroy previous stack
             echo OldBucketID: "$OldWorkID"
             echo Stack names: "${STACKS[@]}"
-            if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkID}" ]]
-              then
-                aws s3 rm "s3://udapeople-${OldWorkID}" --recursive
-                aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkID}"
-                aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkID}"
-              fi
+            for index in "${STACKS[@]}"; do
+              echo "$index"; 
+                if [[ grep "${CIRCLE_WORKFLOW_ID:0:7}" $index]]
+                  then
+                    echo $index
+                  else
+                    aws s3 rm "s3://udapeople-${OldWorkID}" --recursive
+                    aws cloudformation delete-stack --stack-name "$index"
+                    aws cloudformation delete-stack --stack-name "$index"
+                  fi
+              
+            done
          
 workflows:
   default:
