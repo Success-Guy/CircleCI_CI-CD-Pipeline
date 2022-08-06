@@ -402,6 +402,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install dependency
+          command:
+            yum install -y gzip
+            yum install -y tar
+      - run:
           name: Get old WorkID and persist it
           command: |
             aws cloudformation \
@@ -420,6 +425,7 @@ jobs:
           root: ~/
           paths:
             - project/oldWorkID.txt
+      - destroy
 
   cleanup:
     docker:
