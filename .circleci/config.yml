@@ -401,10 +401,13 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       # your code here
+      - run:
+          name: Get old WorkID and persist it
+          command: |
+            aws cloudformation \
+              list-exports --query "Exports[?Name=='WorkID'].Value" \
+              --no-paginate --output text >> ~/project/oldWorkID.txt
+
       - run:
           name: Update cloudfront distribution
           command: |
@@ -413,24 +416,28 @@ jobs:
             --stack-name Udapeople-WEB \
             --parameter-overrides WorkID="${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/oldWorkID.txt
 
   cleanup:
     docker:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/
       - run:
           name: Get old stack workflow id
           command: |
-            export OldWorkID=$(aws cloudformation \
-              list-exports --query "Exports[?Name=='WorkID'].Value" \
-              --no-paginate --output text)
+            export OldWorkID=$(cat ~/project/oldWorkID.txt)
             echo OldWorkID: "${OldWorkID}"
-            echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
+            echo CIRCLE_WORKFLOW_ID: "${CIRCLE_WORKFLOW_ID:0:7}"
             # Fetch the stack names          
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
               --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
-            echo Stack names: "${STACKS[@]}" 
+            echo Stack names: "${STACKS[@]}"
       - run:
           name: Destroy the previous S3 bucket and CloudFormation stack. 
           # Use $OldBucketID environment variable or mybucket644752792305 below.
