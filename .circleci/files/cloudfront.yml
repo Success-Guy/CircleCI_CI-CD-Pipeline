@@ -4,8 +4,7 @@ Description: >
 Parameters:
   WorkID:
     Description: Unique identifier.
-    Type: String
-    # Default: "sbcfweyfgfygevfhw"
+    Type: Strin
 
 Resources:
 

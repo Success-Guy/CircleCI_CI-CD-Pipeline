@@ -33,7 +33,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            export SUCCESS=$(curl -s https://kvdb.io/FMLQNrgswpWNod5mUzQrmG/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            export SUCCESS=$(curl -s "https://kvdb.io/FMLQNrgswpWNod5mUzQrmG/migration_${CIRCLE_WORKFLOW_ID:0:7}")
             # Reverting the database state
             if (( $SUCCESS == 1 ));
             then
@@ -252,7 +252,7 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/migrations_dump.txt
             then
-              curl https://kvdb.io/FMLQNrgswpWNod5mUzQrmG/migration_${CIRCLE_WORKFLOW_ID:0:7} -s -d '1'
+              curl "https://kvdb.io/FMLQNrgswpWNod5mUzQrmG/migration_${CIRCLE_WORKFLOW_ID:0:7}" -s -d '1'
             fi 
       - persist_to_workspace:
           root: ~/
@@ -411,7 +411,7 @@ jobs:
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
             --stack-name Udapeople-WEB \
-            --parameter-overrides WorkID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --parameter-overrides WorkID="${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople
 
   cleanup:
@@ -422,16 +422,28 @@ jobs:
       - run:
           name: Get old stack workflow id
           command: |
-            aws cloudformation \
+            export OldWorkID=$(aws cloudformation \
               list-exports --query "Exports[?Name==\`WorkID\`].Value" \
-              --no-paginate --output text > ~/textfile.txt
+              --no-paginate --output text)
+            echo OldWorkflowID: "${OldWorkflowID}"
+            echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
+            # Fetch the stack names          
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+              --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+            echo Stack names: "${STACKS[@]}" 
       - run:
           name: Destroy the previous S3 bucket and CloudFormation stack. 
           # Use $OldBucketID environment variable or mybucket644752792305 below.
           # Similarly, you can create and use $OldStackID environment variable in place of production-distro 
           command: |
-              export OldBucketID=$(cat ~/textfile.txt)
-              aws s3 rm "s3://${OldBucketID}" --recursive
+              echo OldBucketID: "$OldBucketID"
+              echo Stack names: "${STACKS[@]}"
+              if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkflowID}" ]]
+                then
+                  aws s3 rm "s3://udapeople-${OldBucketID}" --recursive
+                  aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+                  aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+                fi
          
 workflows:
   default:
@@ -469,5 +481,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      # - cleanup:
-          # requires: [cloudfront-update]
+      - cleanup:
+          requires: [cloudfront-update]
